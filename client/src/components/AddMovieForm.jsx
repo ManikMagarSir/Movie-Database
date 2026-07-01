@@ -10,11 +10,19 @@ function AddMovieForm({ onAddMovie, onCancel }) {
   const [year, setYear] = useState('')
   const [director, setDirector] = useState('')
   const [synopsis, setSynopsis] = useState('')
+  const [posterUrl, setPosterUrl] = useState('')
 
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!title.trim() || !year.trim() || !director.trim() || !synopsis.trim()) return
-    onAddMovie({ title: title.trim(), genre, year: Number(year), director: director.trim(), synopsis: synopsis.trim(), cast: [] })
+    onAddMovie({
+      title: title.trim(),
+      genre,
+      year: Number(year),
+      director: director.trim(),
+      synopsis: synopsis.trim(),
+      cast: [],
+    })
   }
 
   const inputClass = "w-full bg-cinema-800 border border-cinema-700/50 rounded-xl py-3 px-4 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cinema-gold focus:border-transparent motion-safe:transition-shadow motion-safe:duration-200"
@@ -53,6 +61,33 @@ function AddMovieForm({ onAddMovie, onCancel }) {
         <div>
           <label htmlFor="director" className="block text-sm font-medium text-gray-400 mb-1.5">Director</label>
           <input id="director" type="text" placeholder="e.g. The Wachowskis" value={director} onChange={(e) => setDirector(e.target.value)} className={inputClass} required />
+        </div>
+
+        <div>
+          <label htmlFor="posterUpload" className="block text-sm font-medium text-gray-400 mb-1.5">Poster Image</label>
+          <div className="flex items-center gap-3">
+            <label
+              htmlFor="posterUpload"
+              className="bg-cinema-700 border border-cinema-600/50 rounded-xl py-3 px-5 text-gray-300 cursor-pointer hover:bg-cinema-600 motion-safe:transition-colors motion-safe:duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cinema-gold"
+            >
+              Choose File
+            </label>
+            <span className="text-sm text-gray-500">{posterUrl ? posterUrl.split('\\').pop() : 'No file chosen'}</span>
+          </div>
+          <input
+            id="posterUpload"
+            type="file"
+            accept="image/*"
+            className="sr-only"
+            onChange={(e) => {
+              const file = e.target.files[0]
+              if (file) {
+                alert('Poster upload will be available once the backend is set up. For now, a placeholder poster will be auto-generated.')
+                setPosterUrl(file.name)
+              }
+            }}
+          />
+          <p className="text-xs text-gray-600 mt-1.5">A placeholder poster will be generated automatically.</p>
         </div>
 
         <div>

@@ -27,6 +27,23 @@ function MovieCard({ movie, onMovieClick }) {
     }
   }
 
+  const handleImgError = (e) => {
+    const palettes = {
+      'Sci-Fi': ['#0f0c29', '#302b63', '#24243e'],
+      Crime: ['#1a1a2e', '#16213e', '#0f3460'],
+      Thriller: ['#2d2d2d', '#1f1f1f', '#111111'],
+      Adventure: ['#0d3b66', '#1a5e7a', '#2d8f9e'],
+      Comedy: ['#3d2e1a', '#5c4a2a', '#7a663a'],
+      Horror: ['#1c0000', '#2d0505', '#3f0a0a'],
+      Romance: ['#3d1a2e', '#5c2a4a', '#7a3a5c'],
+      Action: ['#1a1a3d', '#2a2a5c', '#3a3a7a'],
+      Drama: ['#1a2d1a', '#2a4a2a', '#3a6a3a'],
+    }
+    const [c1, c2, c3] = palettes[movie.genre] || ['#1a1a2e', '#16213e', '#0f3460']
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="600"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:${c1}"/><stop offset="50%" style="stop-color:${c2}"/><stop offset="100%" style="stop-color:${c3}"/></linearGradient></defs><rect width="400" height="600" fill="url(#g)"/><text x="200" y="290" text-anchor="middle" fill="rgba(255,255,255,0.12)" font-size="28" font-family="sans-serif" font-weight="bold">${movie.title.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</text></svg>`
+    e.target.src = `data:image/svg+xml,${encodeURIComponent(svg)}`
+  }
+
   return (
     <div
       className="group bg-cinema-800 rounded-2xl border border-cinema-gold/20 overflow-hidden cursor-pointer
@@ -43,6 +60,7 @@ function MovieCard({ movie, onMovieClick }) {
           src={movie.poster}
           alt={`${movie.title} poster`}
           loading="lazy"
+          onError={handleImgError}
           className="w-full h-full object-cover motion-safe:transition-transform motion-safe:duration-500 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-cinema-800/60 to-transparent" />
