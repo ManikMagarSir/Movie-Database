@@ -1,7 +1,9 @@
+import { useNavigate } from 'react-router-dom'
 import { Trash2, Clapperboard } from 'lucide-react'
 import { WatchlistProps } from './props'
 
-function Watchlist({ movies, watchlist, onMovieClick, onToggleWatchlist }) {
+function Watchlist({ movies, watchlist, onToggleWatchlist }) {
+  const navigate = useNavigate()
   const watchlistMovies = movies.filter((m) => watchlist.includes(m.id))
 
   return (
@@ -14,7 +16,7 @@ function Watchlist({ movies, watchlist, onMovieClick, onToggleWatchlist }) {
           <p className="text-gray-500 text-lg">Your watchlist is empty.</p>
           <p className="text-gray-600 mt-1">Browse movies and add some to your watchlist!</p>
           <button
-            onClick={() => onMovieClick(movies[0])}
+            onClick={() => navigate('/')}
             className="mt-6 bg-cinema-gold text-black px-6 py-3 rounded-xl font-semibold hover:bg-cinema-gold-light motion-safe:transition-colors motion-safe:duration-200"
           >
             Browse Movies
@@ -26,13 +28,13 @@ function Watchlist({ movies, watchlist, onMovieClick, onToggleWatchlist }) {
             <div key={movie.id} className="group relative bg-cinema-800 rounded-2xl border border-cinema-gold/20 overflow-hidden shadow-neon hover:shadow-neon-lg motion-safe:transition-shadow motion-safe:duration-300">
               <div
                 className="cursor-pointer"
-                onClick={() => onMovieClick(movie)}
+                onClick={() => navigate(`/movie/${movie.id}`)}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault()
-                    onMovieClick(movie)
+                    navigate(`/movie/${movie.id}`)
                   }
                 }}
               >

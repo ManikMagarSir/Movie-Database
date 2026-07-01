@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { MovieCardProps } from './props'
 
 const ratingBadge = (rating) => {
@@ -15,15 +16,16 @@ const genreColors = {
   Crime: 'bg-cinema-700 text-orange-400',
 }
 
-function MovieCard({ movie, onMovieClick }) {
+function MovieCard({ movie }) {
+  const navigate = useNavigate()
   const badge = ratingBadge(movie.rating)
   const genreStyle = genreColors[movie.genre] || 'bg-cinema-700 text-gray-400'
 
-  const handleClick = () => onMovieClick(movie)
+  const handleClick = () => navigate(`/movie/${movie.id}`)
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
-      onMovieClick(movie)
+      navigate(`/movie/${movie.id}`)
     }
   }
 

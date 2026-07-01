@@ -1,3 +1,4 @@
+import { useParams, useNavigate } from 'react-router-dom'
 import { ArrowLeft, BookmarkPlus, BookmarkCheck } from 'lucide-react'
 import { MovieDetailProps } from './props'
 
@@ -9,11 +10,27 @@ const genreColors = {
   Crime: 'text-orange-400',
 }
 
-function MovieDetail({ movie, isInWatchlist, onToggleWatchlist, onBack }) {
+function MovieDetail({ movies, watchlist, onToggleWatchlist }) {
+  const { id } = useParams()
+  const navigate = useNavigate()
+  const movie = movies.find((m) => m.id === Number(id))
+  const isInWatchlist = watchlist.includes(Number(id))
+
+  if (!movie) {
+    return (
+      <section className="max-w-4xl mx-auto px-4 py-20 text-center">
+        <p className="text-gray-500 text-lg">Movie not found.</p>
+        <button onClick={() => navigate('/')} className="mt-4 text-cinema-gold hover:text-cinema-gold-light">
+          Back to Browse
+        </button>
+      </section>
+    )
+  }
+
   return (
     <section className="max-w-4xl mx-auto px-4 py-10" aria-label="Movie details">
       <button
-        onClick={onBack}
+        onClick={() => navigate('/')}
         className="flex items-center gap-2 text-gray-400 hover:text-cinema-gold motion-safe:transition-colors motion-safe:duration-200 mb-6"
       >
         <ArrowLeft className="w-5 h-5" />

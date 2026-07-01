@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import MovieGrid from './components/MovieGrid'
 import AddMovieForm from './components/AddMovieForm'
@@ -193,9 +194,8 @@ let nextId = 6
 function App() {
   const [movies, setMovies] = useState(initialMovies)
   const [watchlist, setWatchlist] = useState([])
-  const [page, setPage] = useState('browse')
-  const [selectedMovie, setSelectedMovie] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
+  const navigate = useNavigate()
 
   const placeholderPoster = (title, genre) => {
     const palettes = {
@@ -217,19 +217,7 @@ function App() {
   const handleAddMovie = (movie) => {
     const poster = placeholderPoster(movie.title, movie.genre)
     setMovies((prev) => [...prev, { ...movie, poster, id: nextId++, rating: 0 }])
-    setPage('browse')
-  }
-
-  const handleMovieClick = (movie) => {
-    setSelectedMovie(movie)
-    setPage('movie-detail')
-  }
-
-  const handleNavigate = (target) => {
-    setPage(target)
-    if (target === 'browse') {
-      setSelectedMovie(null)
-    }
+    navigate('/')
   }
 
   const handleToggleWatchlist = (movieId) => {
@@ -250,33 +238,44 @@ function App() {
 
   return (
     <div className="min-h-screen bg-cinema-900">
-      <Navbar currentPage={page} onNavigate={handleNavigate} />
-      {page === 'browse' && (
-        <MovieGrid
-          movies={filteredMovies}
-          onMovieClick={handleMovieClick}
-          searchQuery={searchQuery}
-          onSearchChange={handleSearchChange}
-          totalMovies={movies.length}
+      <Navbar />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <MovieGrid
+              movies={filteredMovies}
+              searchQuery={searchQuery}
+              onSearchChange={handleSearchChange}
+              totalMovies={movies.length}
+            />
+          }
         />
-      )}
-      {page === 'add-movie' && <AddMovieForm onAddMovie={handleAddMovie} onCancel={() => handleNavigate('browse')} />}
-      {page === 'movie-detail' && selectedMovie && (
-        <MovieDetail
-          movie={selectedMovie}
-          isInWatchlist={watchlist.includes(selectedMovie.id)}
-          onToggleWatchlist={handleToggleWatchlist}
-          onBack={() => handleNavigate('browse')}
+        <Route
+          path="/add-movie"
+          element={<AddMovieForm onAddMovie={handleAddMovie} />}
         />
-      )}
-      {page === 'watchlist' && (
-        <Watchlist
-          movies={movies}
-          watchlist={watchlist}
-          onMovieClick={handleMovieClick}
-          onToggleWatchlist={handleToggleWatchlist}
+        <Route
+          path="/movie/:id"
+          element={
+            <MovieDetail
+              movies={movies}
+              watchlist={watchlist}
+              onToggleWatchlist={handleToggleWatchlist}
+            />
+          }
         />
-      )}
+        <Route
+          path="/watchlist"
+          element={
+            <Watchlist
+              movies={movies}
+              watchlist={watchlist}
+              onToggleWatchlist={handleToggleWatchlist}
+            />
+          }
+        />
+      </Routes>
     </div>
   )
 }

@@ -3,7 +3,7 @@ import MovieCard from './MovieCard'
 import SearchBar from './SearchBar'
 import { MovieGridProps } from './props'
 
-function MovieGrid({ movies, onMovieClick, searchQuery, onSearchChange, totalMovies }) {
+function MovieGrid({ movies, searchQuery, onSearchChange, totalMovies }) {
   const [stats, setStats] = useState({ total: 0, avgRating: 0 })
 
   useEffect(() => {
@@ -35,7 +35,7 @@ function MovieGrid({ movies, onMovieClick, searchQuery, onSearchChange, totalMov
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {movies.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} onMovieClick={onMovieClick} />
+            <MovieCard key={movie.id} movie={movie} />
           ))}
         </div>
       )}

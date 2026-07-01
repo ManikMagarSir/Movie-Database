@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
 import { AddMovieFormProps } from './props'
 
 const genres = ['Drama', 'Sci-Fi', 'Action', 'Adventure', 'Crime', 'Comedy', 'Horror', 'Romance', 'Thriller']
 
-function AddMovieForm({ onAddMovie, onCancel }) {
+function AddMovieForm({ onAddMovie }) {
+  const navigate = useNavigate()
   const [title, setTitle] = useState('')
   const [genre, setGenre] = useState(genres[0])
   const [year, setYear] = useState('')
@@ -31,7 +33,7 @@ function AddMovieForm({ onAddMovie, onCancel }) {
     <section className="max-w-2xl mx-auto px-4 py-10" aria-label="Add movie form">
       <div className="flex items-center gap-4 mb-8">
         <button
-          onClick={onCancel}
+          onClick={() => navigate('/')}
           className="text-gray-400 hover:text-cinema-gold motion-safe:transition-colors motion-safe:duration-200"
           aria-label="Go back"
         >

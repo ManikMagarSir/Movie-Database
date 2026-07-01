@@ -12,14 +12,10 @@ const MovieShape = PropTypes.shape({
   cast: PropTypes.arrayOf(PropTypes.string),
 })
 
-export const NavbarProps = {
-  currentPage: PropTypes.string.isRequired,
-  onNavigate: PropTypes.func.isRequired,
-}
+export const NavbarProps = {}
 
 export const MovieGridProps = {
   movies: PropTypes.arrayOf(MovieShape).isRequired,
-  onMovieClick: PropTypes.func.isRequired,
   searchQuery: PropTypes.string.isRequired,
   onSearchChange: PropTypes.func.isRequired,
   totalMovies: PropTypes.number.isRequired,
@@ -27,19 +23,16 @@ export const MovieGridProps = {
 
 export const MovieCardProps = {
   movie: MovieShape.isRequired,
-  onMovieClick: PropTypes.func.isRequired,
 }
 
 export const AddMovieFormProps = {
   onAddMovie: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired,
 }
 
 export const MovieDetailProps = {
-  movie: MovieShape.isRequired,
-  isInWatchlist: PropTypes.bool.isRequired,
+  movies: PropTypes.arrayOf(MovieShape).isRequired,
+  watchlist: PropTypes.arrayOf(PropTypes.number).isRequired,
   onToggleWatchlist: PropTypes.func.isRequired,
-  onBack: PropTypes.func.isRequired,
 }
 
 export const SearchBarProps = {
@@ -50,6 +43,5 @@ export const SearchBarProps = {
 export const WatchlistProps = {
   movies: PropTypes.arrayOf(MovieShape).isRequired,
   watchlist: PropTypes.arrayOf(PropTypes.number).isRequired,
-  onMovieClick: PropTypes.func.isRequired,
   onToggleWatchlist: PropTypes.func.isRequired,
 }
