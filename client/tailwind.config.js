@@ -25,6 +25,8 @@ export default {
       boxShadow: {
         glow: '0 0 20px rgba(202, 138, 4, 0.15)',
         'glow-lg': '0 0 30px rgba(202, 138, 4, 0.25)',
+        neon: '0 0 6px rgba(202, 138, 4, 0.2), 0 0 20px rgba(202, 138, 4, 0.1), inset 0 0 6px rgba(202, 138, 4, 0.05)',
+        'neon-lg': '0 0 10px rgba(202, 138, 4, 0.3), 0 0 40px rgba(202, 138, 4, 0.15), inset 0 0 10px rgba(202, 138, 4, 0.08)',
       },
     },
   },
