@@ -1,4 +1,5 @@
 import { ArrowLeft, BookmarkPlus, BookmarkCheck } from 'lucide-react'
+import { MovieDetailProps } from './props'
 
 const genreColors = {
   Drama: 'text-cinema-gold-light',
@@ -81,5 +82,7 @@ function MovieDetail({ movie, isInWatchlist, onToggleWatchlist, onBack }) {
     </section>
   )
 }
+
+MovieDetail.propTypes = MovieDetailProps
 
 export default MovieDetail

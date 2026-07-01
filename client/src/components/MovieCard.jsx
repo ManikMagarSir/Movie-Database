@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import { MovieCardProps } from './props'
 
 const ratingBadge = (rating) => {
   if (rating >= 8) return 'rating-gold'
@@ -63,5 +64,7 @@ function MovieCard({ movie, onMovieClick }) {
     </div>
   )
 }
+
+MovieCard.propTypes = MovieCardProps
 
 export default memo(MovieCard)

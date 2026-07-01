@@ -1,4 +1,5 @@
 import { Trash2, Clapperboard } from 'lucide-react'
+import { WatchlistProps } from './props'
 
 function Watchlist({ movies, watchlist, onMovieClick, onToggleWatchlist }) {
   const watchlistMovies = movies.filter((m) => watchlist.includes(m.id))
@@ -63,5 +64,7 @@ function Watchlist({ movies, watchlist, onMovieClick, onToggleWatchlist }) {
     </section>
   )
 }
+
+Watchlist.propTypes = WatchlistProps
 
 export default Watchlist

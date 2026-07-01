@@ -1,4 +1,5 @@
 import { Clapperboard, ListPlus, PlusCircle } from 'lucide-react'
+import { NavbarProps } from './props'
 
 function Navbar({ currentPage, onNavigate }) {
   const linkClass = (page) =>
@@ -38,5 +39,7 @@ function Navbar({ currentPage, onNavigate }) {
     </nav>
   )
 }
+
+Navbar.propTypes = NavbarProps
 
 export default Navbar

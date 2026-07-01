@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import MovieCard from './MovieCard'
 import SearchBar from './SearchBar'
+import { MovieGridProps } from './props'
 
 function MovieGrid({ movies, onMovieClick, searchQuery, onSearchChange, totalMovies }) {
   const [stats, setStats] = useState({ total: 0, avgRating: 0 })
@@ -41,5 +42,7 @@ function MovieGrid({ movies, onMovieClick, searchQuery, onSearchChange, totalMov
     </section>
   )
 }
+
+MovieGrid.propTypes = MovieGridProps
 
 export default MovieGrid

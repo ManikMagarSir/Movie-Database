@@ -1,4 +1,5 @@
 import { Search } from 'lucide-react'
+import { SearchBarProps } from './props'
 
 function SearchBar({ value, onChange }) {
   return (
@@ -18,5 +19,7 @@ function SearchBar({ value, onChange }) {
     </div>
   )
 }
+
+SearchBar.propTypes = SearchBarProps
 
 export default SearchBar

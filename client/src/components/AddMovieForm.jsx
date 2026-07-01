@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { ArrowLeft } from 'lucide-react'
+import { AddMovieFormProps } from './props'
 
 const genres = ['Drama', 'Sci-Fi', 'Action', 'Adventure', 'Crime', 'Comedy', 'Horror', 'Romance', 'Thriller']
 
@@ -69,5 +70,7 @@ function AddMovieForm({ onAddMovie, onCancel }) {
     </section>
   )
 }
+
+AddMovieForm.propTypes = AddMovieFormProps
 
 export default AddMovieForm
