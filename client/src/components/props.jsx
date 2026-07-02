@@ -16,9 +16,8 @@ export const NavbarProps = {}
 
 export const MovieGridProps = {
   movies: PropTypes.arrayOf(MovieShape).isRequired,
-  searchQuery: PropTypes.string.isRequired,
-  onSearchChange: PropTypes.func.isRequired,
   totalMovies: PropTypes.number.isRequired,
+  children: PropTypes.node,
 }
 
 export const MovieCardProps = {
@@ -44,4 +43,6 @@ export const WatchlistProps = {
   movies: PropTypes.arrayOf(MovieShape).isRequired,
   watchlist: PropTypes.arrayOf(PropTypes.number).isRequired,
   onToggleWatchlist: PropTypes.func.isRequired,
+  searchQuery: PropTypes.string,
+  children: PropTypes.node,
 }

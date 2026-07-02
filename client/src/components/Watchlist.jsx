@@ -2,13 +2,17 @@ import { useNavigate } from 'react-router-dom'
 import { Trash2, Clapperboard } from 'lucide-react'
 import { WatchlistProps } from './props'
 
-function Watchlist({ movies, watchlist, onToggleWatchlist }) {
+function Watchlist({ movies, watchlist, onToggleWatchlist, searchQuery, children }) {
   const navigate = useNavigate()
-  const watchlistMovies = movies.filter((m) => watchlist.includes(m.id))
+  const watchlistMovies = movies.filter(
+    (m) => watchlist.includes(m.id) && m.title.toLowerCase().includes((searchQuery ?? '').toLowerCase())
+  )
 
   return (
     <section className="max-w-6xl mx-auto px-4 py-10" aria-label="Watchlist">
       <h2 className="text-3xl font-heading text-cinema-gold mb-8 tracking-tight">My Watchlist</h2>
+
+      {children}
 
       {watchlistMovies.length === 0 ? (
         <div className="text-center mt-20">
