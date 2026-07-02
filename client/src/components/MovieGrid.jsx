@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import MovieCard from './MovieCard'
-import SearchBar from './SearchBar'
 import { MovieGridProps } from './props'
 
-function MovieGrid({ movies, searchQuery, onSearchChange, totalMovies }) {
+function MovieGrid({ movies, totalMovies, children }) {
   const [stats, setStats] = useState({ total: 0, avgRating: 0 })
 
   useEffect(() => {
@@ -28,7 +27,7 @@ function MovieGrid({ movies, searchQuery, onSearchChange, totalMovies }) {
         </div>
       </div>
 
-      <SearchBar value={searchQuery} onChange={onSearchChange} />
+      {children}
 
       {movies.length === 0 ? (
         <p className="text-center text-gray-500 mt-16 text-lg">No movies found. Try a different search or add one!</p>

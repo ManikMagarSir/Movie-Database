@@ -5,6 +5,7 @@ import MovieGrid from './components/MovieGrid'
 import AddMovieForm from './components/AddMovieForm'
 import MovieDetail from './components/MovieDetail'
 import Watchlist from './components/Watchlist'
+import SearchBar from './components/SearchBar'
 import shawshank from './assets/posters/shawshank.jpg'
 import inception from './assets/posters/inception.jpg'
 import darkKnight from './assets/posters/dark-knight.jpg'
@@ -243,12 +244,9 @@ function App() {
         <Route
           path="/"
           element={
-            <MovieGrid
-              movies={filteredMovies}
-              searchQuery={searchQuery}
-              onSearchChange={handleSearchChange}
-              totalMovies={movies.length}
-            />
+            <MovieGrid movies={filteredMovies} totalMovies={movies.length}>
+              <SearchBar value={searchQuery} onChange={handleSearchChange} />
+            </MovieGrid>
           }
         />
         <Route
@@ -272,7 +270,10 @@ function App() {
               movies={movies}
               watchlist={watchlist}
               onToggleWatchlist={handleToggleWatchlist}
-            />
+              searchQuery={searchQuery}
+            >
+              <SearchBar value={searchQuery} onChange={handleSearchChange} />
+            </Watchlist>
           }
         />
       </Routes>
