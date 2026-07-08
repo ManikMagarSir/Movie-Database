@@ -13,6 +13,8 @@ function AddMovieForm({ onAddMovie }) {
   const [year, setYear] = useState('')
   const [director, setDirector] = useState('')
   const [synopsis, setSynopsis] = useState('')
+  const [cast, setCast] = useState('')
+  const [rating, setRating] = useState('')
   const [posterFile, setPosterFile] = useState(null)
 
   const handleSubmit = (e) => {
@@ -25,6 +27,8 @@ function AddMovieForm({ onAddMovie }) {
     form.append('year', Number(year))
     form.append('director', director.trim())
     form.append('synopsis', synopsis.trim())
+    form.append('cast', cast.trim())
+    if (rating) form.append('rating', Number(rating))
     if (posterFile) form.append('poster', posterFile)
 
     onAddMovie(form)
@@ -94,6 +98,17 @@ function AddMovieForm({ onAddMovie }) {
         <div>
           <label htmlFor="synopsis" className="block text-sm font-medium text-gray-400 mb-1.5">Synopsis</label>
           <textarea id="synopsis" rows={4} placeholder="Brief description of the movie..." value={synopsis} onChange={(e) => setSynopsis(e.target.value)} className={`${inputClass} resize-none`} required />
+        </div>
+
+        <div>
+          <label htmlFor="rating" className="block text-sm font-medium text-gray-400 mb-1.5">Rating (0–10)</label>
+          <input id="rating" type="number" min="0" max="10" step="0.1" placeholder="e.g. 8.5" value={rating} onChange={(e) => setRating(e.target.value)} className={inputClass} />
+        </div>
+
+        <div>
+          <label htmlFor="cast" className="block text-sm font-medium text-gray-400 mb-1.5">Cast</label>
+          <input id="cast" type="text" placeholder="e.g. Tom Hanks, Tim Allen" value={cast} onChange={(e) => setCast(e.target.value)} className={inputClass} />
+          <p className="text-xs text-gray-500 mt-1">Separate actor names with commas</p>
         </div>
 
         <button

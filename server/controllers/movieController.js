@@ -11,12 +11,14 @@ export function getMovieById(req, res) {
 }
 
 export function createMovie(req, res) {
-  const { title, genre, year, director, synopsis } = req.body;
+  const { title, genre, year, director, synopsis, cast, rating } = req.body;
   if (!title || !genre || !year || !director || !synopsis) {
     return res.status(400).json({ error: "All fields are required: title, genre, year, director, synopsis" });
   }
   const poster = req.file ? `/uploads/posters/${req.file.filename}` : null;
-  const movie = Movie.createMovie({ ...req.body, year: Number(year), poster });
+  const castArray = cast ? cast.split(",").map((s) => s.trim()).filter(Boolean) : [];
+  const ratingNum = rating ? Math.min(10, Math.max(0, Number(rating))) : null;
+  const movie = Movie.createMovie({ title, genre, year: Number(year), director, synopsis, poster, cast: castArray, rating: ratingNum });
   res.status(201).json(movie);
 }
 
