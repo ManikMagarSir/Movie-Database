@@ -1,30 +1,33 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Upload } from 'lucide-react'
 import { AddMovieFormProps } from './props'
 
 const genres = ['Drama', 'Sci-Fi', 'Action', 'Adventure', 'Crime', 'Comedy', 'Horror', 'Romance', 'Thriller']
 
 function AddMovieForm({ onAddMovie }) {
   const navigate = useNavigate()
+  const fileRef = useRef()
   const [title, setTitle] = useState('')
   const [genre, setGenre] = useState(genres[0])
   const [year, setYear] = useState('')
   const [director, setDirector] = useState('')
   const [synopsis, setSynopsis] = useState('')
-  const [posterUrl, setPosterUrl] = useState('')
+  const [posterFile, setPosterFile] = useState(null)
 
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!title.trim() || !year.trim() || !director.trim() || !synopsis.trim()) return
-    onAddMovie({
-      title: title.trim(),
-      genre,
-      year: Number(year),
-      director: director.trim(),
-      synopsis: synopsis.trim(),
-      cast: [],
-    })
+
+    const form = new FormData()
+    form.append('title', title.trim())
+    form.append('genre', genre)
+    form.append('year', Number(year))
+    form.append('director', director.trim())
+    form.append('synopsis', synopsis.trim())
+    if (posterFile) form.append('poster', posterFile)
+
+    onAddMovie(form)
   }
 
   const inputClass = "w-full bg-cinema-800 border border-cinema-700/50 rounded-xl py-3 px-4 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cinema-gold focus:border-transparent motion-safe:transition-shadow motion-safe:duration-200"
@@ -68,28 +71,24 @@ function AddMovieForm({ onAddMovie }) {
         <div>
           <label htmlFor="posterUpload" className="block text-sm font-medium text-gray-400 mb-1.5">Poster Image</label>
           <div className="flex items-center gap-3">
-            <label
-              htmlFor="posterUpload"
-              className="bg-cinema-700 border border-cinema-600/50 rounded-xl py-3 px-5 text-gray-300 cursor-pointer hover:bg-cinema-600 motion-safe:transition-colors motion-safe:duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cinema-gold"
+            <button
+              type="button"
+              onClick={() => fileRef.current?.click()}
+              className="flex items-center gap-2 bg-cinema-700 border border-cinema-600/50 rounded-xl py-3 px-5 text-gray-300 cursor-pointer hover:bg-cinema-600 motion-safe:transition-colors motion-safe:duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cinema-gold"
             >
+              <Upload className="w-4 h-4" />
               Choose File
-            </label>
-            <span className="text-sm text-gray-500">{posterUrl ? posterUrl.split('\\').pop() : 'No file chosen'}</span>
+            </button>
+            <span className="text-sm text-gray-500">{posterFile ? posterFile.name : 'No file chosen'}</span>
           </div>
           <input
+            ref={fileRef}
             id="posterUpload"
             type="file"
             accept="image/*"
-            className="sr-only"
-            onChange={(e) => {
-              const file = e.target.files[0]
-              if (file) {
-                alert('Poster upload not yet available. A placeholder will be used.')
-                setPosterUrl(file.name)
-              }
-            }}
+            className="hidden"
+            onChange={(e) => setPosterFile(e.target.files[0] || null)}
           />
-          <p className="text-xs text-gray-600 mt-1.5">A placeholder poster will be generated automatically.</p>
         </div>
 
         <div>

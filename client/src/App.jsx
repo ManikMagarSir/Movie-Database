@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import MovieGrid from './components/MovieGrid'
 import AddMovieForm from './components/AddMovieForm'
@@ -11,6 +11,7 @@ function App() {
   const [movies, setMovies] = useState([])
   const [watchlist, setWatchlist] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetch('/api/movies')
@@ -22,14 +23,20 @@ function App() {
       .catch((err) => console.error('Failed to fetch movies:', err))
   }, [])
 
-  const handleAddMovie = (movie) => {
+  const handleAddMovie = (form) => {
     fetch('/api/movies', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(movie),
+      body: form,
     })
-      .then((r) => r.json())
-      .then((newMovie) => setMovies((prev) => [...prev, newMovie]))
+      .then((r) => {
+        if (!r.ok) throw new Error('Failed to add movie')
+        return r.json()
+      })
+      .then((newMovie) => {
+        setMovies((prev) => [...prev, newMovie])
+        navigate('/')
+      })
+      .catch((err) => console.error(err))
   }
 
   const handleToggleWatchlist = (movieId) => {
