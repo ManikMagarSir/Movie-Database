@@ -6,7 +6,7 @@ A full-stack MERN application for browsing movies, leaving ratings and reviews, 
 
 ```
 client/   — React + Vite frontend
-server/   — Node.js + Express backend (coming soon)
+server/   — Node.js + Express REST API
 ```
 
 ## Features
@@ -25,10 +25,28 @@ server/   — Node.js + Express backend (coming soon)
 - Personal watchlist — add/remove movies with dedicated page
 - Dashboard stats: total movies and average rating via `useEffect`
 
+### Week 3 — Backend REST API
+- Express server with CORS, dotenv, and nodemon
+- Controllers, routes, and models folder structure
+- 5 REST endpoints: `GET /api/movies`, `GET /api/movies/:id`, `POST /api/movies`, `DELETE /api/movies/:id`
+- In-memory movie store seeded with 5 movies
+- Input validation on POST (all fields required)
+- All endpoints tested with curl
+
 ## Getting Started
+
+### Frontend
 
 ```bash
 cd client
+npm install
+npm run dev
+```
+
+### Backend
+
+```bash
+cd server
 npm install
 npm run dev
 ```
@@ -37,6 +55,7 @@ npm run dev
 
 - **Frontend:** React 19, Vite 8, Tailwind CSS 3, Lucide React
 - **Linting:** oxlint
-- **Backend (planned):** Node.js, Express.js, MongoDB
+- **Backend:** Node.js, Express.js
 - **Auth (planned):** JWT, bcrypt
 - **AI (planned):** Gemini API
+- **Database (planned):** MongoDB Atlas
