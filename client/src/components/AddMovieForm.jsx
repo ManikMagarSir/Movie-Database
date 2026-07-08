@@ -84,7 +84,7 @@ function AddMovieForm({ onAddMovie }) {
             onChange={(e) => {
               const file = e.target.files[0]
               if (file) {
-                alert('Poster upload will be available once the backend is set up. For now, a placeholder poster will be auto-generated.')
+                alert('Poster upload not yet available. A placeholder will be used.')
                 setPosterUrl(file.name)
               }
             }}

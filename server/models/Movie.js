@@ -9,8 +9,8 @@ export function getMovieById(id) {
   return movies.find((m) => m.id === id) || null;
 }
 
-export function createMovie({ title, genre, year, director, synopsis }) {
-  const movie = { id: nextId++, title, genre, year, director, synopsis };
+export function createMovie({ title, genre, year, director, synopsis, poster, rating, cast }) {
+  const movie = { id: nextId++, title, genre, year, director, synopsis, poster: poster || null, rating: rating || null, cast: cast || [] };
   movies.push(movie);
   return movie;
 }

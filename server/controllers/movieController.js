@@ -15,7 +15,7 @@ export function createMovie(req, res) {
   if (!title || !genre || !year || !director || !synopsis) {
     return res.status(400).json({ error: "All fields are required: title, genre, year, director, synopsis" });
   }
-  const movie = Movie.createMovie({ title, genre, year: Number(year), director, synopsis });
+  const movie = Movie.createMovie({ ...req.body, year: Number(year) });
   res.status(201).json(movie);
 }
 

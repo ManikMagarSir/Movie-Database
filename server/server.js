@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use("/posters", express.static("public/posters"));
 
 app.use("/api/movies", movieRoutes);
 
