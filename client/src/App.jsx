@@ -14,8 +14,12 @@ function App() {
 
   useEffect(() => {
     fetch('/api/movies')
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error('Backend not running')
+        return r.json()
+      })
       .then(setMovies)
+      .catch((err) => console.error('Failed to fetch movies:', err))
   }, [])
 
   const handleAddMovie = (movie) => {

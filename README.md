@@ -35,21 +35,25 @@ server/   — Node.js + Express REST API
 
 ## Getting Started
 
-### Frontend
+You need **two terminals** — one for the backend, one for the frontend.
 
-```bash
-cd client
-npm install
-npm run dev
-```
-
-### Backend
+### Backend (Terminal 1)
 
 ```bash
 cd server
 npm install
-npm run dev
+npm run dev     # starts on http://localhost:3000
 ```
+
+### Frontend (Terminal 2)
+
+```bash
+cd client
+npm install
+npm run dev     # starts on http://localhost:5173
+```
+
+Open `http://localhost:5173` — the Vite dev server proxies API requests to the backend.
 
 ## Tech Stack
 
