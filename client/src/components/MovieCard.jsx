@@ -2,9 +2,9 @@ import { memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { MovieCardProps } from './props'
 
-const ratingBadge = (rating) => {
-  if (rating >= 8) return 'rating-gold'
-  if (rating >= 5) return 'rating-silver'
+const ratingBadge = (avgRating) => {
+  if (avgRating >= 8) return 'rating-gold'
+  if (avgRating >= 5) return 'rating-silver'
   return 'rating-bronze'
 }
 
@@ -18,14 +18,14 @@ const genreColors = {
 
 function MovieCard({ movie }) {
   const navigate = useNavigate()
-  const badge = ratingBadge(movie.rating)
+  const badge = ratingBadge(movie.avgRating)
   const genreStyle = genreColors[movie.genre] || 'bg-cinema-700 text-gray-400'
 
-  const handleClick = () => navigate(`/movie/${movie.id}`)
+  const handleClick = () => navigate(`/movie/${movie._id}`)
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
-      navigate(`/movie/${movie.id}`)
+      navigate(`/movie/${movie._id}`)
     }
   }
 
@@ -66,9 +66,9 @@ function MovieCard({ movie }) {
           className="w-full h-full object-cover motion-safe:transition-transform motion-safe:duration-500 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-cinema-800/60 to-transparent" />
-        {movie.rating > 0 && (
+        {movie.avgRating > 0 && (
           <span className={`absolute top-3 right-3 ${badge} text-xs font-bold px-3 py-1 rounded-full shadow-lg`}>
-            {movie.rating}
+            {movie.avgRating}
           </span>
         )}
       </div>

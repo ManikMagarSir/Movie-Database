@@ -6,37 +6,30 @@ import AddMovieForm from './components/AddMovieForm'
 import MovieDetail from './components/MovieDetail'
 import Watchlist from './components/Watchlist'
 import SearchBar from './components/SearchBar'
+import { fetchMovies, createMovie } from './api/movies'
 
 function App() {
   const [movies, setMovies] = useState([])
   const [watchlist, setWatchlist] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch('/api/movies')
-      .then((r) => {
-        if (!r.ok) throw new Error('Backend not running')
-        return r.json()
-      })
+    fetchMovies()
       .then(setMovies)
-      .catch((err) => console.error('Failed to fetch movies:', err))
+      .catch((err) => setError(err.response?.data?.error || 'Failed to fetch movies'))
+      .finally(() => setLoading(false))
   }, [])
 
   const handleAddMovie = (form) => {
-    fetch('/api/movies', {
-      method: 'POST',
-      body: form,
-    })
-      .then((r) => {
-        if (!r.ok) throw new Error('Failed to add movie')
-        return r.json()
-      })
+    createMovie(form)
       .then((newMovie) => {
         setMovies((prev) => [...prev, newMovie])
         navigate('/')
       })
-      .catch((err) => console.error(err))
+      .catch((err) => alert(err.response?.data?.error || 'Failed to add movie'))
   }
 
   const handleToggleWatchlist = (movieId) => {
@@ -62,7 +55,7 @@ function App() {
         <Route
           path="/"
           element={
-            <MovieGrid movies={filteredMovies} totalMovies={movies.length}>
+            <MovieGrid movies={filteredMovies} totalMovies={movies.length} loading={loading} error={error}>
               <SearchBar value={searchQuery} onChange={handleSearchChange} />
             </MovieGrid>
           }

@@ -5,7 +5,7 @@ import { WatchlistProps } from './props'
 function Watchlist({ movies, watchlist, onToggleWatchlist, searchQuery, children }) {
   const navigate = useNavigate()
   const watchlistMovies = movies.filter(
-    (m) => watchlist.includes(m.id) && m.title.toLowerCase().includes((searchQuery ?? '').toLowerCase())
+    (m) => watchlist.includes(m._id) && m.title.toLowerCase().includes((searchQuery ?? '').toLowerCase())
   )
 
   return (
@@ -29,10 +29,10 @@ function Watchlist({ movies, watchlist, onToggleWatchlist, searchQuery, children
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {watchlistMovies.map((movie) => (
-            <div key={movie.id} className="group relative bg-cinema-800 rounded-2xl border border-cinema-gold/20 overflow-hidden shadow-neon hover:shadow-neon-lg motion-safe:transition-shadow motion-safe:duration-300">
+            <div key={movie._id} className="group relative bg-cinema-800 rounded-2xl border border-cinema-gold/20 overflow-hidden shadow-neon hover:shadow-neon-lg motion-safe:transition-shadow motion-safe:duration-300">
               <div
                 className="cursor-pointer"
-                onClick={() => navigate(`/movie/${movie.id}`)}
+                onClick={() => navigate(`/movie/${movie._id}`)}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
@@ -57,7 +57,7 @@ function Watchlist({ movies, watchlist, onToggleWatchlist, searchQuery, children
                 </div>
               </div>
               <button
-                onClick={() => onToggleWatchlist(movie.id)}
+                onClick={() => onToggleWatchlist(movie._id)}
                 className="absolute top-3 right-3 bg-cinema-900/80 p-2 rounded-full text-cinema-red-light hover:bg-cinema-red/20 motion-safe:transition-colors motion-safe:duration-200"
                 aria-label={`Remove ${movie.title} from watchlist`}
               >

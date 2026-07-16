@@ -13,8 +13,8 @@ const genreColors = {
 function MovieDetail({ movies, watchlist, onToggleWatchlist }) {
   const { id } = useParams()
   const navigate = useNavigate()
-  const movie = movies.find((m) => m.id === Number(id))
-  const isInWatchlist = watchlist.includes(Number(id))
+  const movie = movies.find((m) => m._id === id)
+  const isInWatchlist = watchlist.includes(id)
 
   const handleImgError = (e) => {
     const palettes = {
@@ -69,9 +69,9 @@ function MovieDetail({ movies, watchlist, onToggleWatchlist }) {
                 {movie.genre}
               </span>
               <span className="text-sm text-gray-500">{movie.year}</span>
-              {movie.rating > 0 && (
+              {movie.avgRating > 0 && (
                 <span className="bg-cinema-gold text-black text-xs font-bold px-3 py-1 rounded-full">
-                  {movie.rating}
+                  {movie.avgRating}
                 </span>
               )}
             </div>
@@ -101,7 +101,7 @@ function MovieDetail({ movies, watchlist, onToggleWatchlist }) {
           )}
 
           <button
-            onClick={() => onToggleWatchlist(movie.id)}
+            onClick={() => onToggleWatchlist(movie._id)}
             className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold motion-safe:transition-colors motion-safe:duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cinema-gold focus-visible:ring-offset-2 focus-visible:ring-offset-cinema-900 ${
               isInWatchlist
                 ? 'bg-cinema-700 text-cinema-gold border border-cinema-gold/30'
