@@ -12,16 +12,18 @@ function App() {
   const [movies, setMovies] = useState([])
   const [watchlist, setWatchlist] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
+  const [selectedGenre, setSelectedGenre] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetchMovies()
+    setLoading(true)
+    fetchMovies(selectedGenre || undefined)
       .then(setMovies)
       .catch((err) => setError(err.response?.data?.error || 'Failed to fetch movies'))
       .finally(() => setLoading(false))
-  }, [])
+  }, [selectedGenre])
 
   const handleAddMovie = (form) => {
     createMovie(form)
@@ -55,7 +57,14 @@ function App() {
         <Route
           path="/"
           element={
-            <MovieGrid movies={filteredMovies} totalMovies={movies.length} loading={loading} error={error}>
+            <MovieGrid
+              movies={filteredMovies}
+              totalMovies={movies.length}
+              loading={loading}
+              error={error}
+              selectedGenre={selectedGenre}
+              onGenreChange={setSelectedGenre}
+            >
               <SearchBar value={searchQuery} onChange={handleSearchChange} />
             </MovieGrid>
           }

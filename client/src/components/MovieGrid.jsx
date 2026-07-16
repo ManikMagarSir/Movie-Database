@@ -1,7 +1,8 @@
 import MovieCard from './MovieCard'
+import GenreFilter from './GenreFilter'
 import { MovieGridProps } from './props'
 
-function MovieGrid({ movies, totalMovies, loading, error, children }) {
+function MovieGrid({ movies, totalMovies, loading, error, selectedGenre, onGenreChange, children }) {
   if (loading) {
     return (
       <section className="max-w-6xl mx-auto px-4 py-10" aria-label="Movie browsing grid">
@@ -50,6 +51,8 @@ function MovieGrid({ movies, totalMovies, loading, error, children }) {
       </div>
 
       {children}
+
+      <GenreFilter selected={selectedGenre} onChange={onGenreChange} />
 
       {movies.length === 0 ? (
         <p className="text-center text-gray-500 mt-16 text-lg">No movies found. Try a different search or add one!</p>
