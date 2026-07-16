@@ -5,9 +5,10 @@ const api = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
-export async function fetchMovies(genre) {
+export async function fetchMovies(genre, search) {
   const params = {};
   if (genre) params.genre = genre;
+  if (search) params.search = search;
   const { data } = await api.get("/", { params });
   return data;
 }

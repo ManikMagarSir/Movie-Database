@@ -2,10 +2,13 @@ import Movie from "../models/Movie.js";
 
 export async function getAllMovies(req, res) {
   try {
-    const { genre } = req.query;
+    const { genre, search } = req.query;
     const filter = {};
     if (genre) {
       filter.genre = { $regex: new RegExp(`^${genre}$`, "i") };
+    }
+    if (search) {
+      filter.title = { $regex: search, $options: "i" };
     }
     const movies = await Movie.find(filter).sort({ createdAt: -1 });
     res.json(movies);

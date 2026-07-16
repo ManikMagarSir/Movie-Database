@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import MovieGrid from './components/MovieGrid'
@@ -17,13 +17,18 @@ function App() {
   const [error, setError] = useState(null)
   const navigate = useNavigate()
 
-  useEffect(() => {
+  const loadMovies = useCallback(() => {
     setLoading(true)
-    fetchMovies(selectedGenre || undefined)
+    fetchMovies(selectedGenre || undefined, searchQuery || undefined)
       .then(setMovies)
       .catch((err) => setError(err.response?.data?.error || 'Failed to fetch movies'))
       .finally(() => setLoading(false))
-  }, [selectedGenre])
+  }, [selectedGenre, searchQuery])
+
+  useEffect(() => {
+    const timer = setTimeout(loadMovies, 300)
+    return () => clearTimeout(timer)
+  }, [loadMovies])
 
   const handleAddMovie = (form) => {
     createMovie(form)
@@ -46,10 +51,6 @@ function App() {
     setSearchQuery(query)
   }
 
-  const filteredMovies = movies.filter((m) =>
-    m.title.toLowerCase().includes(searchQuery.toLowerCase())
-  )
-
   return (
     <div className="min-h-screen bg-cinema-900">
       <Navbar />
@@ -58,7 +59,7 @@ function App() {
           path="/"
           element={
             <MovieGrid
-              movies={filteredMovies}
+              movies={movies}
               totalMovies={movies.length}
               loading={loading}
               error={error}
