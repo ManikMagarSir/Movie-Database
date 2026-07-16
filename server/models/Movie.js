@@ -1,55 +1,61 @@
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+import mongoose from "mongoose";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DATA_FILE = path.join(__dirname, "..", "data", "movies.json");
+const reviewSchema = new mongoose.Schema(
+  {
+    user: { type: String, required: true },
+    rating: { type: Number, required: true, min: 0, max: 10 },
+    comment: { type: String, required: true },
+  },
+  { _id: false, timestamps: true }
+);
 
-function load() {
-  try {
-    return JSON.parse(fs.readFileSync(DATA_FILE, "utf-8"));
-  } catch {
-    return null;
-  }
-}
+const movieSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: [true, "Title is required"],
+      trim: true,
+    },
+    genre: {
+      type: String,
+      required: [true, "Genre is required"],
+      trim: true,
+    },
+    year: {
+      type: Number,
+      required: [true, "Year is required"],
+      min: [1888, "Year must be after 1888"],
+      max: [new Date().getFullYear() + 5, "Year cannot be in the far future"],
+    },
+    director: {
+      type: String,
+      required: [true, "Director is required"],
+      trim: true,
+    },
+    synopsis: {
+      type: String,
+      required: [true, "Synopsis is required"],
+      trim: true,
+    },
+    avgRating: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 10,
+    },
+    reviews: [reviewSchema],
+    poster: {
+      type: String,
+      default: null,
+    },
+    cast: {
+      type: [String],
+      default: [],
+    },
+  },
+  { timestamps: true }
+);
 
-function save(movies) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(movies, null, 2));
-}
+const Movie = mongoose.model("Movie", movieSchema);
 
-let movies = load();
-let nextId = 1;
-if (movies) {
-  nextId = Math.max(0, ...movies.map((m) => m.id)) + 1;
-} else {
-  movies = [];
-}
-
-export function getAllMovies() {
-  return movies;
-}
-
-export function getMovieById(id) {
-  return movies.find((m) => m.id === id) || null;
-}
-
-export function createMovie(data) {
-  const movie = { id: nextId++, poster: null, rating: null, cast: [], ...data };
-  movies.push(movie);
-  save(movies);
-  return movie;
-}
-
-export function deleteMovie(id) {
-  const index = movies.findIndex((m) => m.id === id);
-  if (index === -1) return false;
-  movies.splice(index, 1);
-  save(movies);
-  return true;
-}
-
-export function seedMovies(data) {
-  if (movies.length > 0) return;
-  data.forEach((m) => movies.push({ id: nextId++, ...m }));
-  save(movies);
-}
+export default Movie;
