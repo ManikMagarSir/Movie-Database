@@ -5,6 +5,14 @@ const api = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 export async function fetchMovies(genre, search) {
   const params = {};
   if (genre) params.genre = genre;
@@ -34,4 +42,9 @@ export async function updateMovie(id, formData) {
 
 export async function deleteMovie(id) {
   await api.delete(`/${id}`);
+}
+
+export async function addReview(movieId, rating, comment) {
+  const { data } = await api.post(`/${movieId}/reviews`, { rating, comment });
+  return data;
 }
