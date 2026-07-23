@@ -1,3 +1,2 @@
-node_modules/
-.env
-data/
+uploads/posters/*.png
+uploads/posters/*.ico

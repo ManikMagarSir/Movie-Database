@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.env
+.env.local
+data/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.sw?
