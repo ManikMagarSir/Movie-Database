@@ -1,14 +1,24 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Routes, Route, useNavigate } from 'react-router-dom'
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import MovieGrid from './components/MovieGrid'
 import AddMovieForm from './components/AddMovieForm'
 import MovieDetail from './components/MovieDetail'
 import Watchlist from './components/Watchlist'
 import SearchBar from './components/SearchBar'
+import Login from './components/Login'
+import Register from './components/Register'
+import { useAuth } from './context/AuthContext'
 import { fetchMovies, createMovie } from './api/movies'
 
+function PrivateRoute({ children }) {
+  const { user, loading } = useAuth()
+  if (loading) return null
+  return user ? children : <Navigate to="/login" />
+}
+
 function App() {
+  const { user, loading: authLoading } = useAuth()
   const [movies, setMovies] = useState([])
   const [watchlist, setWatchlist] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
@@ -51,6 +61,8 @@ function App() {
     setSearchQuery(query)
   }
 
+  if (authLoading) return null
+
   return (
     <div className="min-h-screen bg-cinema-900">
       <Navbar />
@@ -70,9 +82,15 @@ function App() {
             </MovieGrid>
           }
         />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route
           path="/add-movie"
-          element={<AddMovieForm onAddMovie={handleAddMovie} />}
+          element={
+            <PrivateRoute>
+              <AddMovieForm onAddMovie={handleAddMovie} />
+            </PrivateRoute>
+          }
         />
         <Route
           path="/movie/:id"
@@ -87,14 +105,16 @@ function App() {
         <Route
           path="/watchlist"
           element={
-            <Watchlist
-              movies={movies}
-              watchlist={watchlist}
-              onToggleWatchlist={handleToggleWatchlist}
-              searchQuery={searchQuery}
-            >
-              <SearchBar value={searchQuery} onChange={handleSearchChange} />
-            </Watchlist>
+            <PrivateRoute>
+              <Watchlist
+                movies={movies}
+                watchlist={watchlist}
+                onToggleWatchlist={handleToggleWatchlist}
+                searchQuery={searchQuery}
+              >
+                <SearchBar value={searchQuery} onChange={handleSearchChange} />
+              </Watchlist>
+            </PrivateRoute>
           }
         />
       </Routes>
