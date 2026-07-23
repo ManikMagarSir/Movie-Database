@@ -109,6 +109,7 @@ function App() {
               movies={movies}
               watchlist={watchlist}
               onToggleWatchlist={handleToggleWatchlist}
+              onMovieUpdate={loadMovies}
             />
           }
         />

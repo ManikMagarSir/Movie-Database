@@ -12,7 +12,7 @@ const genreColors = {
   Crime: 'text-orange-400',
 }
 
-function MovieDetail({ movies, watchlist, onToggleWatchlist }) {
+function MovieDetail({ movies, watchlist, onToggleWatchlist, onMovieUpdate }) {
   const { id } = useParams()
   const navigate = useNavigate()
   const { user } = useAuth()
@@ -35,6 +35,7 @@ function MovieDetail({ movies, watchlist, onToggleWatchlist }) {
       setReviewRating(8)
       setReviewSuccess(true)
       setTimeout(() => setReviewSuccess(false), 3000)
+      if (onMovieUpdate) onMovieUpdate()
     } catch (err) {
       setReviewError(err.response?.data?.error || 'Failed to submit review')
     } finally {

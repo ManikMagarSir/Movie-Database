@@ -34,6 +34,7 @@ export const MovieDetailProps = {
   movies: PropTypes.arrayOf(MovieShape).isRequired,
   watchlist: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.shape({ _id: PropTypes.string })])).isRequired,
   onToggleWatchlist: PropTypes.func.isRequired,
+  onMovieUpdate: PropTypes.func,
 }
 
 export const SearchBarProps = {
