@@ -1,11 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 import { Trash2, Clapperboard } from 'lucide-react'
-import { WatchlistProps } from './props'
 
 function Watchlist({ movies, watchlist, onToggleWatchlist, searchQuery, children }) {
   const navigate = useNavigate()
   const watchlistMovies = movies.filter(
-    (m) => watchlist.includes(m._id) && m.title.toLowerCase().includes((searchQuery ?? '').toLowerCase())
+    (m) => watchlist.some((w) => (w._id || w) === m._id) && m.title.toLowerCase().includes((searchQuery ?? '').toLowerCase())
   )
 
   return (
@@ -38,7 +37,7 @@ function Watchlist({ movies, watchlist, onToggleWatchlist, searchQuery, children
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault()
-                    navigate(`/movie/${movie.id}`)
+                    navigate(`/movie/${movie._id}`)
                   }
                 }}
               >
@@ -70,7 +69,5 @@ function Watchlist({ movies, watchlist, onToggleWatchlist, searchQuery, children
     </section>
   )
 }
-
-Watchlist.propTypes = WatchlistProps
 
 export default Watchlist

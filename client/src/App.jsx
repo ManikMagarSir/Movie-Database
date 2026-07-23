@@ -10,6 +10,7 @@ import Login from './components/Login'
 import Register from './components/Register'
 import { useAuth } from './context/AuthContext'
 import { fetchMovies, createMovie } from './api/movies'
+import { getWatchlist, toggleWatchlist } from './api/user'
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth()
@@ -40,6 +41,14 @@ function App() {
     return () => clearTimeout(timer)
   }, [loadMovies])
 
+  useEffect(() => {
+    if (user) {
+      getWatchlist().then(setWatchlist).catch(() => setWatchlist([]))
+    } else {
+      setWatchlist([])
+    }
+  }, [user])
+
   const handleAddMovie = (form) => {
     createMovie(form)
       .then((newMovie) => {
@@ -49,12 +58,13 @@ function App() {
       .catch((err) => alert(err.response?.data?.error || 'Failed to add movie'))
   }
 
-  const handleToggleWatchlist = (movieId) => {
-    setWatchlist((prev) =>
-      prev.includes(movieId)
-        ? prev.filter((id) => id !== movieId)
-        : [...prev, movieId]
-    )
+  const handleToggleWatchlist = async (movieId) => {
+    try {
+      const updated = await toggleWatchlist(movieId)
+      setWatchlist(updated)
+    } catch {
+      alert('Failed to update watchlist')
+    }
   }
 
   const handleSearchChange = (query) => {

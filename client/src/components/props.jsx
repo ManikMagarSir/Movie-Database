@@ -32,7 +32,7 @@ export const AddMovieFormProps = {
 
 export const MovieDetailProps = {
   movies: PropTypes.arrayOf(MovieShape).isRequired,
-  watchlist: PropTypes.arrayOf(PropTypes.string).isRequired,
+  watchlist: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.shape({ _id: PropTypes.string })])).isRequired,
   onToggleWatchlist: PropTypes.func.isRequired,
 }
 
@@ -43,7 +43,7 @@ export const SearchBarProps = {
 
 export const WatchlistProps = {
   movies: PropTypes.arrayOf(MovieShape).isRequired,
-  watchlist: PropTypes.arrayOf(PropTypes.string).isRequired,
+  watchlist: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.shape({ _id: PropTypes.string })])).isRequired,
   onToggleWatchlist: PropTypes.func.isRequired,
   searchQuery: PropTypes.string,
   children: PropTypes.node,
