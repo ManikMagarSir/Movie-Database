@@ -3,6 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import movieRoutes from "./routes/movieRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 import { connectDB } from "./config/db.js";
 
 const app = express();
@@ -14,6 +15,7 @@ app.use("/uploads", express.static("uploads"));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/movies", movieRoutes);
+app.use("/api/user", userRoutes);
 
 connectDB();
 
