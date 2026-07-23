@@ -16,7 +16,7 @@ export function AuthProvider({ children }) {
       }
     }
     setLoading(false);
-  }, []);
+  }, [token]);
 
   const handleAuth = (data) => {
     localStorage.setItem("token", data.token);
