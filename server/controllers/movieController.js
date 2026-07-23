@@ -106,3 +106,45 @@ export async function updateMovie(req, res) {
     res.status(500).json({ error: "Failed to update movie" });
   }
 }
+
+export async function addReview(req, res) {
+  try {
+    const { rating, comment } = req.body;
+    if (rating === undefined || !comment) {
+      return res.status(400).json({ error: "Rating and comment are required" });
+    }
+
+    const ratingNum = Math.min(10, Math.max(0, Number(rating)));
+
+    const movie = await Movie.findById(req.params.id);
+    if (!movie) return res.status(404).json({ error: "Movie not found" });
+
+    const existingReview = movie.reviews.find(
+      (r) => r.user.toString() === req.user._id.toString()
+    );
+    if (existingReview) {
+      return res.status(409).json({ error: "You already reviewed this movie" });
+    }
+
+    movie.reviews.push({ user: req.user._id, rating: ratingNum, comment });
+
+    if (movie.reviews.length > 0) {
+      const total = movie.reviews.reduce((sum, r) => sum + r.rating, 0);
+      movie.avgRating = Math.round((total / movie.reviews.length) * 10) / 10;
+    }
+
+    await movie.save();
+
+    const populated = await movie.populate("reviews.user", "name email");
+    res.status(201).json(populated);
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      const messages = Object.values(error.errors).map((e) => e.message);
+      return res.status(400).json({ error: messages.join(", ") });
+    }
+    if (error.kind === "ObjectId") {
+      return res.status(404).json({ error: "Movie not found" });
+    }
+    res.status(500).json({ error: "Failed to add review" });
+  }
+}
